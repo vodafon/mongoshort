@@ -1,3 +1,4 @@
+require 'sinatra'
 require 'rubygems'
 require 'bundler'
 Bundler.setup
@@ -53,13 +54,13 @@ class UrlTest < Test::Unit::TestCase
   def test_key_should_update_the_last_access_date
     Timecop.freeze do
       get '/83802'
-      url = URL.find_by_url_key('83802')
+      url = URL.where(:url_key => '83802').first
       assert_equal Time.now, url.last_accessed
     end
   end
   
   def test_key_should_increment_times_viewed
-    url = URL.find_by_url_key('83802')
+    url = URL.where(:url_key => '83802').first
     assert_equal url.times_viewed, 0
     get '/83802'
     url.reload
@@ -107,7 +108,7 @@ class UrlTest < Test::Unit::TestCase
   def test_new_should_use_a_five_character_hash
     set_authorization!
     post '/new', { :url => 'http://www.google.com' }
-    new_url = URL.find_by_full_url('http://www.google.com')
+    new_url = URL.where(:full_url => 'http://www.google.com').first
     assert_equal 5, new_url.url_key.length
   end
   
@@ -128,7 +129,7 @@ class UrlTest < Test::Unit::TestCase
   def test_new_should_return_short_url_and_full_url
     set_authorization!
     post '/new', { :url => 'http://www.amazon.com' }
-    new_url = URL.find_by_full_url('http://www.amazon.com')
+    new_url = URL.where(:full_url => 'http://www.amazon.com').first
     response_hash = JSON.parse(last_response.body)
     assert_equal new_url.short_url, response_hash["short_url"]
     assert_equal 'http://www.amazon.com', response_hash["full_url"]

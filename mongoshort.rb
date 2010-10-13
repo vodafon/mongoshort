@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'mongo_mapper'
+require 'mongoid'
 require 'uri'
 require 'digest/md5'
 require File.expand_path('models/url')
@@ -8,21 +8,31 @@ require File.expand_path('models/url')
 CREDENTIALS = ['mongoshort', 'mongoshort']
 
 configure :development do
-  MongoMapper.database = 'mongoshort_dev'
+  Mongoid.configure do |config|
+    name = 'mongoidshort_dev'
+    host = "localhost"
+    config.master = Mongo::Connection.new.db(name)
+    config.persist_in_safe_mode = false
+  end
   enable :run
 end
 
 configure :test do
-  MongoMapper.database = 'mongoshort_test'
+  Mongoid.configure do |config|
+    name = 'mongoidshort_test'
+    host = "localhost"
+    config.master = Mongo::Connection.new.db(name)
+    config.persist_in_safe_mode = false
+  end
 end
 
 configure :production do
-  # If using a database outside of where MongoShort is running (like MongoHQ - http://www.mongohq.com/), specify the connection here.
-  # MongoMapper.connection = Mongo::Connection.new('mongo.host.com', 27017)
-  MongoMapper.database = 'mongoshort'
-  
-  # Only necessary if your database needs authentication (strongly recommended in production).
-  # MongoMapper.database.authenticate(ENV['mongodb_user'], ENV['mongodb_pass'])
+  Mongoid.configure do |config|
+    name = 'mongoidshort'
+    host = "localhost"
+    config.master = Mongo::Connection.new.db(name)
+    config.persist_in_safe_mode = false
+  end
 end
 
 helpers do
@@ -52,11 +62,11 @@ end
 
 get '/' do
   # You can set up an index page (under the /public directory).
-  "MongoShort"
+  "MongoidShort"
 end
 
 get '/:url' do
-  url = URL.find_by_url_key(params[:url])
+  url = URL.where(:url_key => params[:url]).first
   if url.nil?
     raise Sinatra::NotFound
   else
