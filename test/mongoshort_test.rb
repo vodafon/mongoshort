@@ -1,4 +1,4 @@
-require 'sinatra'
+require 'timecop'
 require 'rubygems'
 require 'bundler'
 Bundler.setup
@@ -52,7 +52,7 @@ class UrlTest < Test::Unit::TestCase
   end
   
   def test_key_should_update_the_last_access_date
-    Timecop.freeze do
+    Timecop.freeze(Date.today) do
       get '/83802'
       url = URL.where(:url_key => '83802').first
       assert_equal Time.now, url.last_accessed

@@ -3,7 +3,7 @@ class URL
 
   field :url_key, :type => String, :required => true
   field :full_url, :type => String, :required => true
-  field :last_accessed, :type => Time
+  field :last_accessed, :type => Time, :required => true
   field :times_viewed, :type => Integer, :default => 0
   
   # Tip for URL validation taken from http://mbleigh.com/2009/02/18/quick-tip-rails-url-validation.html

@@ -8,5 +8,5 @@ gem "json"
 
 group :test do
   gem "rack-test", :require => "rack/test"
-  gem "timecop"
+  gem "timecop", "0.3.5" 
 end
