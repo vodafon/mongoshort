@@ -1,13 +1,15 @@
+require 'sinatra'
 require 'mongo_mapper'
 require 'uri'
 require 'digest/md5'
-require 'models/url'
+require File.expand_path('models/url')
 
 # If using Basic Authentication, please change the default passwords!
 CREDENTIALS = ['mongoshort', 'mongoshort']
 
 configure :development do
   MongoMapper.database = 'mongoshort_dev'
+  enable :run
 end
 
 configure :test do

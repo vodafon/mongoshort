@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler'
 Bundler.setup
 Bundler.require(:default, :test)
-require 'mongoshort'
+require File.expand_path('mongoshort')
 require 'test/unit'
 
 set :environment, :test

@@ -26,10 +26,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bson (= 1.0.4)
-  bson_ext (= 1.0.4)
-  json (= 1.4.6)
-  mongo_mapper (= 0.8.3)
-  rack-test (= 0.5.4)
-  sinatra (= 1.0)
-  timecop (= 0.3.5)
+  bson
+  bson_ext
+  json
+  mongo_mapper
+  rack-test
+  sinatra
+  timecop
